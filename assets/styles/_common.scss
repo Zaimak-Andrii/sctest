@@ -1,0 +1,12 @@
+body {
+  width: 100vw;
+  height: 100dvh;
+
+  font-family: 'Roboto';
+  font-weight: 400;
+  @extend %body-text-normal;
+
+  color: $gray-500;
+
+  background-color: $gray-800;
+}
