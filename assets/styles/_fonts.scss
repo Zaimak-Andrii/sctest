@@ -72,12 +72,12 @@
 
 %body-text-normal-bold {
   @extend %body-text-normal;
-  line-height: 1.5;
+  font-weight: 500;
 }
 
 %caption-text-normal {
   font-size: 14px;
-  line-height: 1.71;
+  line-height: calc(24 / 14);
 }
 
 %caption-text-normal-bold {

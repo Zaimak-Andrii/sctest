@@ -1,8 +1,6 @@
 <template>
   <Header />
-  <main>
-    <slot />
-  </main>
+  <slot />
 </template>
 
 <script></script>
