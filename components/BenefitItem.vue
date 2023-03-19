@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <span class="icon">{{ icon }}</span>
+    <span class="icon"><component :is="icon" /></span>
     <div class="content-wrapper">
       <h3 class="title">{{ title }}</h3>
       <p class="desc">{{ desc }}</p>
@@ -45,8 +45,15 @@ defineProps<BenefitItemProps>();
   height: var(--benefit-item-icon-size);
   padding: var(--benefit-item-icon-p);
 
+  color: $gray-600;
+
   background: $primary-yellow;
   border-radius: 15px;
+
+  & > svg {
+    width: 100%;
+    height: 100%;
+  }
 
   @include breakpoint(desktop) {
     --benefit-item-icon-size: 65px;

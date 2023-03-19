@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import IconCircleClose from './IconCircleClose.vue';
+import { IconCircleClose } from '@/components/icons';
 
 type FormInputProps = {
   type: 'text' | 'password' | 'email' | 'tel';
