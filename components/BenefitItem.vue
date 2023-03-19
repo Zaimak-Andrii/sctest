@@ -32,8 +32,6 @@ defineProps<BenefitItemProps>();
     text-align: center;
   }
 }
-.content-wrapper {
-}
 .icon {
   --benefit-item-icon-size: 45px;
   --benefit-item-icon-p: 10px;
