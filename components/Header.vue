@@ -5,15 +5,43 @@
         <Logo class="header-logo" />
         <ul class="header-auth">
           <!-- // TODO: Add button as link -->
-          <li><Button size="small" variant="dark">Вхід</Button></li>
-          <li><Button size="small">Реєстрація</Button></li>
+          <li><Button size="small" variant="dark" @click="clickLoginHandler">Вхід</Button></li>
+          <li><Button size="small" @click="clickRegistrationHandler">Реєстрація</Button></li>
         </ul>
       </nav>
     </Container>
   </header>
+  <ClientOnly>
+    <Teleport to="#modal">
+      <Modal v-if="isModalOpen" :is-open="isModalOpen" :on-close="() => (isModalOpen = false)">
+        <!-- <Registration /> -->
+        <component :is="modalContent" />
+        <!-- <Login /> -->
+      </Modal>
+    </Teleport>
+  </ClientOnly>
 </template>
 
-<script setup></script>
+<script setup>
+import Login from '@/components/Login.vue';
+import Registration from '@/components/Registration.vue';
+
+const isModalOpen = ref(false);
+const modalContent = ref(null);
+
+const login = markRaw(Login);
+const registration = markRaw(Registration);
+
+const clickLoginHandler = () => {
+  modalContent.value = login;
+  isModalOpen.value = true;
+};
+
+const clickRegistrationHandler = () => {
+  modalContent.value = registration;
+  isModalOpen.value = true;
+};
+</script>
 
 <style lang="scss" scoped>
 .header {

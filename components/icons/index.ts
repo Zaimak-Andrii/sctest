@@ -1,4 +1,14 @@
+export { default as Icon } from './Icon.vue';
 export { default as IconSmile } from './IconSmile.vue';
 export { default as IconChart } from './IconChart.vue';
 export { default as IconMegaphone } from './IconMegaphone.vue';
 export { default as IconCircleClose } from './IconCircleClose.vue';
+export { default as IconClose } from './IconClose.vue';
+export { default as IconLock } from './IconLock.vue';
+export { default as IconUser } from './IconUser.vue';
+export { default as IconTelegram } from './IconTelegram.vue';
+export { default as IconSkype } from './IconSkype.vue';
+export { default as IconCheck } from './IconCheck.vue';
+export { default as IconArrow } from './IconArrow.vue';
+export { default as IconEyeOpen } from './IconEyeOpen.vue';
+export { default as IconEyeClose } from './IconEyeClose.vue';

@@ -7,12 +7,14 @@
       <span class="form-input">
         <input
           class="form-input__text"
+          :name="name"
           :class="{ 'form-input__text--error': error }"
           :type="computedType"
-          v-model="value"
+          :value="inputValue"
+          @input="changeInputHandler"
           :placeholder="placeholder"
         />
-        <span v-if="icon" class="form-input__icon"> <component :is="icon" /> </span>
+        <Icon v-if="icon" size="24px" :icon="icon" class="form-input__icon" @click.stop="clickIconHandler" />
       </span>
     </label>
     <p v-if="error" class="form-error">{{ error }}</p>
@@ -20,36 +22,58 @@
 </template>
 
 <script setup lang="ts">
-import { IconCircleClose } from '@/components/icons';
+import { Icon, IconCircleClose, IconEyeOpen, IconEyeClose } from '@/components/icons';
 
 type FormInputProps = {
   type: 'text' | 'password' | 'email' | 'tel';
   value: string;
+  name: string;
   placeholder: string;
   label?: null | string;
   error?: null | string;
 };
 
-const { type, label, value, placeholder, error } = withDefaults(defineProps<FormInputProps>(), {
+const emit = defineEmits(['update:input']);
+
+const props = withDefaults(defineProps<FormInputProps>(), {
   type: 'text',
   placeholder: '',
 });
 
+const { type, label, value, name, placeholder, error } = toRefs(props);
+const inputValue = ref(value);
 const isShowPassword = ref(false);
 
 const computedType = computed<FormInputProps['type']>(() => {
-  if (type === 'password') {
+  if (type.value === 'password') {
     return isShowPassword.value ? 'text' : 'password';
   }
 
-  return type;
+  return type.value;
 });
 
 const icon = computed(() => {
-  if (error) return IconCircleClose;
+  if (type.value === 'password') {
+    return isShowPassword.value ? IconEyeClose : IconEyeOpen;
+  }
+
+  if (error?.value) return IconCircleClose;
 
   return null;
 });
+
+const clickIconHandler = () => {
+  if (!error?.value) {
+    isShowPassword.value = !isShowPassword.value;
+  }
+  if (error?.value) {
+    inputValue.value = '';
+  }
+};
+
+const changeInputHandler = (evt: Event) => {
+  emit('update:input', (evt.target as HTMLInputElement).name, (evt.target as HTMLInputElement).value);
+};
 </script>
 
 <style lang="scss" scoped>

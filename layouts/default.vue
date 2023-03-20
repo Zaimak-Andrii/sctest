@@ -1,6 +1,7 @@
 <template>
   <Header />
   <slot />
+  <div id="modal"></div>
 </template>
 
 <script></script>
