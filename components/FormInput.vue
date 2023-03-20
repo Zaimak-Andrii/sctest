@@ -8,11 +8,12 @@
         <input
           class="form-input__text"
           :name="name"
-          :class="{ 'form-input__text--error': error }"
+          :class="{ 'form-input__text--error': error, 'form-input__text--success': isValid }"
           :type="computedType"
           :value="inputValue"
           @input="changeInputHandler"
           :placeholder="placeholder"
+          @blur="isTouched = true"
         />
         <Icon v-if="icon" size="24px" :icon="icon" class="form-input__icon" @click.stop="clickIconHandler" />
       </span>
@@ -22,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon, IconCircleClose, IconEyeOpen, IconEyeClose } from '@/components/icons';
+import { Icon, IconCircleClose, IconEyeOpen, IconEyeClose, IconCheck } from '@/components/icons';
 
 type FormInputProps = {
   type: 'text' | 'password' | 'email' | 'tel';
@@ -34,15 +35,15 @@ type FormInputProps = {
 };
 
 const emit = defineEmits(['update:input']);
-
 const props = withDefaults(defineProps<FormInputProps>(), {
   type: 'text',
   placeholder: '',
 });
-
 const { type, label, value, name, placeholder, error } = toRefs(props);
+
 const inputValue = ref(value);
 const isShowPassword = ref(false);
+const isTouched = ref(false);
 
 const computedType = computed<FormInputProps['type']>(() => {
   if (type.value === 'password') {
@@ -52,12 +53,22 @@ const computedType = computed<FormInputProps['type']>(() => {
   return type.value;
 });
 
+const isValid = ref<null | boolean>(null);
+
+// watch([isTouched], (c) => {
+//   isValid.value = true;
+// });
+
 const icon = computed(() => {
+  if (error?.value) return IconCircleClose;
+
+  if (isValid.value) {
+    return IconCheck;
+  }
+
   if (type.value === 'password') {
     return isShowPassword.value ? IconEyeClose : IconEyeOpen;
   }
-
-  if (error?.value) return IconCircleClose;
 
   return null;
 });
@@ -66,8 +77,9 @@ const clickIconHandler = () => {
   if (!error?.value) {
     isShowPassword.value = !isShowPassword.value;
   }
+
   if (error?.value) {
-    inputValue.value = '';
+    emit('update:input', name.value, '');
   }
 };
 
@@ -125,6 +137,9 @@ const changeInputHandler = (evt: Event) => {
 
   &--success {
     border-color: $primary-green;
+    & + .form-input__icon {
+      color: $primary-green;
+    }
   }
 
   &--error {
